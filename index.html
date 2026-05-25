@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mohd Sams Tabrez | Director's Cut</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --accent-1: #00f0ff; 
+      --accent-2: #ff0055; 
+      --accent-3: #8b5cf6; 
+    }
+
+    /* Global cursor is now auto, not none */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      cursor: none;
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15), transparent 50%);
+    }
+
+    /* --- 1. AGGRESSIVE LOADER & AUDIO UNLOCK --- */
+    #loader {
+  cursor: auto;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: #000; z-index: 999999;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    #loader.hidden { transform: translateY(-100%); }
+    
+    .loader-text {
+      font-family: 'Syncopate', sans-serif; font-size: 3rem; text-transform: uppercase;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      animation: pulseText 0.5s infinite alternate;
+    }
+    .loader-counter { font-family: 'Space Grotesk', sans-serif; font-size: 5rem; font-weight: 700; margin-top: 10px; }
+    
+    /* ENLARGED ENTER BUTTON */
+    #enter-btn {
+  cursor: pointer !important;
+      display: none; margin-top: 40px; font-family: 'Syncopate', sans-serif; 
+      font-size: 1.5rem; color: var(--bg); background: var(--accent-1);
+      padding: 20px 60px; border-radius: 8px; cursor: pointer !important; 
+      text-transform: uppercase; letter-spacing: 4px; transition: all 0.3s;
+      animation: pulseText 1s infinite alternate;
+    }
+    #enter-btn:hover { background: #fff; transform: scale(1.05); }
+
+    @keyframes pulseText { 0% { opacity: 0.8; } 100% { opacity: 1; text-shadow: 0 0 20px rgba(0,240,255,0.5); } }
+
+    /* --- 2. X-RAY DIFFERENCE CURSOR --- */
+    .cursor {
+      width: 20px; height: 20px; background: white; border-radius: 50%;
+      position: fixed; top: 0; left: 0; pointer-events: none; z-index: 100000;
+      transform: translate(-50%, -50%); mix-blend-mode: difference; 
+      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex; justify-content: center; align-items: center;
+    }
+    .cursor::after {
+      content: 'PLAY'; font-family: 'Syncopate', sans-serif; font-size: 14px;
+      color: black; opacity: 0; transition: opacity 0.2s; font-weight: 700;
+    }
+    .cursor.hover-video { 
+  width: 0px; 
+  height: 0px; 
+}
+
+.cursor.hover-video::after { 
+  opacity: 0; 
+}
+
+.cursor.hover-text { 
+  width: 20px; 
+  height: 20px; 
+}
+
+    /* --- 3. MASSIVE HERO HEADER WITH GENRES --- */
+    header { 
+      min-height: 45vh; margin-top: 10vh; display: flex; flex-direction: column; 
+      justify-content: center; align-items: center; position: relative; 
+    }
+    
+    h1 {
+      font-family: 'Syncopate', sans-serif; 
+      font-size: 5.5vw; 
+      line-height: 0.85;
+      text-transform: uppercase; 
+      text-align: center; 
+      margin: 0; 
+      padding: 0; 
+      color: var(--text);
+      white-space: nowrap; 
+    }
+    .hero-sub {
+      font-family: 'Instrument Serif', serif; font-style: italic; font-size: 2.5vw;
+      color: #a1a1aa; margin-top: 20px;
+    }
+
+    .hero-genres-wrapper {
+      display: flex; justify-content: center; align-items: center; 
+      width: 100%; max-width: 900px; margin-top: 40px; gap: 6vw;
+    }
+    .genre-list { list-style: none; display: flex; flex-direction: column; gap: 20px; }
+    .genre-list.left { text-align: right; }
+    .genre-list.right { text-align: left; }
+    
+    .genre-list li {
+      font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 3px; color: #52525b; text-transform: uppercase; transition: all 0.3s ease;
+    }
+    .genre-list li:hover { color: #fff; text-shadow: 0 0 15px rgba(0, 240, 255, 0.8); transform: scale(1.05); }
+
+    /* --- EASTER EGG RACING TRACK TRIGGER --- */
+    .track-trigger {
+      width: 40px; height: 120px;
+      border-left: 2px dashed rgba(0, 240, 255, 0.3);
+      border-right: 2px dashed rgba(0, 240, 255, 0.3);
+      cursor: pointer !important; transition: all 0.3s;
+      background: rgba(0, 240, 255, 0.02);
+      position: relative; overflow: hidden;
+    }
+    .play-text {
+      position: absolute; width: 100%; height: 100%;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px;
+      animation: driveTrack 2s linear infinite;
+    }
+    .play-text.second { animation-delay: -1s; }
+    .track-trigger span {
+      font-family: 'Syncopate', sans-serif; font-size: 14px; color: var(--accent-1); 
+      font-weight: 700; opacity: 0.8; pointer-events: none; text-shadow: 0 0 5px rgba(0,240,255,0.5);
+    }
+    .track-trigger:hover {
+      background: rgba(0, 240, 255, 0.1); box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+      border-color: var(--accent-1);
+    }
+    .track-trigger:hover .play-text { animation-duration: 0.6s; } 
+    @keyframes driveTrack {
+      0% { top: -100%; opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* --- THE GAME MODAL --- */
+    #game-modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.95); z-index: 9999999; flex-direction: column; 
+      align-items: center; justify-content: center; backdrop-filter: blur(10px);
+    }
+    #game-modal * { cursor: auto !important; }
+    .game-ui {
+      display: flex; justify-content: space-between; width: 400px; max-width: 90vw;
+      margin-bottom: 15px; font-family: 'Syncopate', sans-serif; color: white;
+    }
+    .game-score-box span { color: var(--accent-1); font-size: 1.5rem; }
+    .game-score-box.high span { color: var(--accent-2); }
+    #game-canvas {
+      background: #0a0a0c; border: 2px solid var(--accent-1); 
+      box-shadow: 0 0 40px rgba(0,240,255,0.2); width: 400px; max-width: 90vw; height: 600px;
+    }
+    .close-game {
+      position: absolute; top: 30px; right: 40px; font-family: 'Syncopate', sans-serif;
+      font-size: 1rem; color: #fff; cursor: pointer !important; letter-spacing: 2px;
+      transition: color 0.3s; border: 1px solid rgba(255,255,255,0.2); padding: 10px 20px;
+    }
+    .close-game:hover { color: var(--accent-2); border-color: var(--accent-2); }
+
+    /* --- 4. THE CINEMATIC "FOCUS MODE" GRID --- */
+    .gallery-container { padding: 5vw; position: relative; }
+    
+    .gallery-dimmer {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.85); z-index: 5;
+      opacity: 0; pointer-events: none; transition: opacity 0.5s ease;
+    }
+    .gallery-container.focus-active .gallery-dimmer { opacity: 1; }
+
+    .gallery {
+      display: grid; grid-template-columns: repeat(12, 1fr); gap: 2vw;
+      max-width: 1800px; margin: 0 auto; position: relative; z-index: 10;
+    }
+
+    .card {
+      position: relative; overflow: hidden; border-radius: 8px; background: #0a0a0c;
+      transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1); transform-origin: center center;
+    }
+
+    .card:nth-child(1) { grid-column: 1 / 9; display: flex; flex-direction: column; justify-content: space-between; padding: 4vw; background: transparent; border: 1px solid rgba(255,255,255,0.1); } 
+    .card:nth-child(2) { grid-column: 9 / 13; aspect-ratio: 1/1; } 
+    
+    .card:nth-child(3) { grid-column: 1 / 4; aspect-ratio: 9/16; width: 85%; justify-self: center; } 
+    .card:nth-child(4) { grid-column: 4 / 7; aspect-ratio: 9/16; width: 85%; justify-self: center; } 
+    .card:nth-child(5) { grid-column: 7 / 10; aspect-ratio: 9/16; width: 85%; justify-self: center; } 
+    .card:nth-child(6) { grid-column: 10 / 13; aspect-ratio: 9/16; width: 85%; justify-self: center; } 
+    
+    .card:nth-child(7) { grid-column: 1 / 7; aspect-ratio: 16/9; } 
+    .card:nth-child(8) { grid-column: 7 / 13; aspect-ratio: 16/9; } 
+
+    .card video, .card img {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: grayscale(100%) brightness(0.6); transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .gallery-container.focus-active .card { transform: scale(0.95); opacity: 0.3; filter: blur(4px); }
+    .gallery-container.focus-active .card:hover {
+      transform: scale(1.05); opacity: 1; filter: blur(0px); z-index: 20;
+      box-shadow: 0 0 50px rgba(0, 240, 255, 0.2), 0 0 100px rgba(255, 0, 85, 0.1);
+      border: 1px solid var(--accent-1);
+    }
+    .gallery-container.focus-active .card:hover video, 
+    .gallery-container.focus-active .card:hover img { filter: grayscale(0%) brightness(1.1); }
+
+    .card-info {
+      position: absolute; bottom: 0; left: 0; width: 100%; 
+      padding: 25px; 
+      background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+      transform: translateY(0); opacity: 0.4; transition: all 0.4s ease;
+      text-align: left; 
+      display: flex; flex-direction: column; justify-content: flex-end; 
+    }
+    .card:hover .card-info { opacity: 1; }
+    
+    .card-info h3 { font-family: 'Syncopate', sans-serif; font-size: 1.5rem; text-transform: uppercase; margin: 0 0 5px 0; line-height: 1.1; }
+    .card-info p { font-family: 'Space Grotesk', sans-serif; color: var(--accent-1); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin: 0; }
+
+    .about-index { font-family: 'Space Grotesk', sans-serif; color: var(--accent-2); font-weight: 700; letter-spacing: 4px; font-size: 1rem; margin-bottom: 20px;}
+    .about-text h2 { font-family: 'Instrument Serif', serif; font-style: italic; font-size: 4rem; line-height: 1; margin-bottom: 20px; font-weight: 400; }
+    .about-text p { font-size: 1.2rem; line-height: 1.6; color: #a1a1aa; font-weight: 300; max-width: 90%; }
+    .about-text p strong { color: #fff; font-weight: 700; font-family: 'Space Grotesk', sans-serif;}
+
+    /* --- 5. THE CONTACT TERMINAL --- */
+    .contact-section {
+      padding: 10vw 5vw 15vw; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 10;
+    }
+    
+    .contact-header {
+      font-family: 'Syncopate', sans-serif; 
+      text-transform: uppercase;
+      font-size: 3.5rem; 
+      margin-bottom: 50px; 
+      color: var(--text); 
+      text-align: center;
+    }
+
+    .contact-form {
+      width: 100%; max-width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+    }
+    
+    .form-group { position: relative; display: flex; flex-direction: column; }
+    .form-group.full-width { grid-column: 1 / -1; }
+    
+    .form-input {
+      background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.1);
+      padding: 20px; color: white; font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem;
+      outline: none; transition: all 0.3s ease; border-radius: 4px;
+    }
+    .form-input:focus {
+      border-color: var(--accent-1); background: rgba(0, 240, 255, 0.05);
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.1);
+    }
+    .form-input::placeholder { color: #555; font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 2px; }
+    textarea.form-input { min-height: 180px; resize: none; }
+    
+    .submit-btn {
+      grid-column: 1 / -1; background: transparent; color: var(--text);
+      border: 1px solid rgba(255,255,255,0.2); padding: 25px;
+      font-family: 'Syncopate', sans-serif; font-size: 1.2rem; text-transform: uppercase;
+      letter-spacing: 4px; transition: all 0.4s ease; position: relative; overflow: hidden;
+      border-radius: 4px; margin-top: 20px;
+    }
+    .submit-btn:hover {
+      background: var(--accent-2); color: #fff; border-color: var(--accent-2);
+      box-shadow: 0 0 40px rgba(255, 0, 85, 0.4); transform: translateY(-5px);
+    }
+
+    @media (max-width: 900px) {
+      .gallery { display: flex; flex-direction: column; }
+      .card { aspect-ratio: 16/9 !important; }
+      .card:nth-child(3), .card:nth-child(4), .card:nth-child(5), .card:nth-child(6) { 
+        aspect-ratio: 9/16 !important; 
+        width: 100% !important; 
+      }
+      h1 { font-size: 10vw; }
+      .about-text h2 { font-size: 2.5rem; }
+      .hero-genres-wrapper { gap: 3vw; }
+      .genre-list li { font-size: 0.6rem; }
+      .contact-form { grid-template-columns: 1fr; }
+      .contact-header { font-size: 3.5rem; }
+      .cursor { display: none; } 
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loader">
+    <div class="loader-text" id="loader-text">INITIALIZING</div>
+    <div class="loader-counter" id="counter">0%</div>
+    <div id="enter-btn">ENTER</div>
+  </div>
+
+  <div class="cursor" id="cursor"></div>
+
+  <header class="text-hover-target">
+    <h1>MOHD SAMS TABREZ</h1>
+    <div class="hero-sub">Shaping raw footage into powerful emotions.</div>
+    
+    <div class="hero-genres-wrapper">
+      <ul class="genre-list left text-hover-target">
+        <li>// Cinematic</li>
+        <li>// Commercial</li>
+        <li>// Documentary</li>
+      </ul>
+      
+      <div class="track-trigger text-hover-target" onclick="openGame()" title="Start Engine">
+        <div class="play-text">
+          <span>P</span><span>L</span><span>A</span><span>Y</span>
+        </div>
+        <div class="play-text second">
+          <span>P</span><span>L</span><span>A</span><span>Y</span>
+        </div>
+      </div>
+      
+      <ul class="genre-list right text-hover-target">
+        <li>Gaming \\</li>
+        <li>Narrative \\</li>
+        <li>Social Media \\</li>
+      </ul>
+    </div>
+  </header>
+
+  <div id="game-modal">
+    <div class="close-game" onclick="closeGame()">EXIT [ESC]</div>
+    <div class="game-ui">
+      <div class="game-score-box">SCORE <br><span id="current-score">0</span></div>
+      <div class="game-score-box high">RECORD <br><span id="high-score">0</span></div>
+    </div>
+    <canvas id="game-canvas" width="400" height="600"></canvas>
+  </div>
+
+  <div class="gallery-container" id="gallery-container">
+    <div class="gallery-dimmer"></div>
+    <main class="gallery">
+      
+      <div class="card text-hover-target">
+        <div class="about-text">
+          <div class="about-index">// 001 - PROFILE</div>
+          <h2>I don't just cut clips.<br>I shape <em>emotions.</em></h2>
+          <p>I am Sam, a Delhi-based video editor. From <strong>high-energy pacing</strong> to dynamic visuals, I build experiences that hold attention, connect with the audience, and leave a permanent impact.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <img src="my-photo.jpg" alt="Profile Image">
+      </div>
+
+      <div class="card video-hover-target">
+        <video src="change-your-personality.mp4" loop playsinline></video>
+        <div class="card-info text-hover-target">
+          <p>001 //</p>
+        </div>
+      </div>
+
+      <div class="card video-hover-target">
+        <video src="tata-intra-colour-grading.mp4" loop playsinline></video>
+        <div class="card-info text-hover-target">
+          <p>002 //</p>
+        </div>
+      </div>
+      
+      <div class="card video-hover-target">
+        <video src="aashna-juyal.mp4" loop playsinline></video>
+        <div class="card-info text-hover-target">
+          <p>003 //</p>
+        </div>
+      </div>
+
+      <div class="card video-hover-target">
+        <video src="freelance-video.mp4" loop playsinline></video>
+        <div class="card-info text-hover-target">
+          <p>004 //</p>
+        </div>
+      </div>
+
+      <div class="card video-hover-target">
+        <video src="gaming-video.mp4" loop playsinline></video>
+        <div class="card-info text-hover-target">
+          <p>Valorant</p>
+        </div>
+      </div>
+
+      <div class="card video-hover-target">
+        <video src="anime.mp4" loop playsinline></video>
+        <div class="card-info text-hover-target">
+          <p>Long Form</p>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <section class="contact-section text-hover-target">
+    <h2 class="contact-header">Initiate a Project.</h2>
+    
+    <form class="contact-form" id="contactForm">
+      <div class="form-group text-hover-target">
+        <input type="text" name="Name" class="form-input" placeholder="YOUR NAME" required>
+      </div>
+      <div class="form-group text-hover-target">
+        <input type="text" name="Contact" class="form-input" placeholder="EMAIL OR NUMBER" required>
+      </div>
+      <div class="form-group text-hover-target">
+        <input type="text" name="Budget" class="form-input" placeholder="ESTIMATED BUDGET" required>
+      </div>
+      <div class="form-group text-hover-target">
+        <input type="text" name="Reference" class="form-input" placeholder="REFERENCE LINK (OPTIONAL)">
+      </div>
+      <div class="form-group full-width text-hover-target">
+        <textarea name="Message" class="form-input" placeholder="PROJECT DETAILS & VISION..." required></textarea>
+      </div>
+      <button type="submit" class="submit-btn text-hover-target">SUBMIT</button>
+    </form>
+  </section>
+
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+
+    const loader = document.getElementById('loader');
+    const counter = document.getElementById('counter');
+    const loaderText = document.getElementById('loader-text');
+    const enterBtn = document.getElementById('enter-btn');
+    let count = 0;
+    
+    const updateCounter = setInterval(() => {
+      count += Math.floor(Math.random() * 15) + 5;
+      if(count >= 100) {
+        count = 100;
+        clearInterval(updateCounter);
+        counter.style.display = 'none';
+        loaderText.style.display = 'none';
+        enterBtn.style.display = 'block';
+      }
+      counter.innerText = count + '%';
+    }, 40);
+
+    enterBtn.addEventListener('click', () => {
+      loader.classList.add('hidden');
+    });
+
+    const cursor = document.getElementById("cursor");
+    let mouseX = 0, mouseY = 0, cursorX = 0, cursorY = 0;
+
+    window.addEventListener("mousemove", (e) => {
+  const form = document.querySelector('.contact-form');
+
+  if (form && form.contains(e.target)) {
+    cursor.style.opacity = "0";
+    document.body.style.cursor = "auto";
+  } else {
+    cursor.style.opacity = "1";
+    document.body.style.cursor = "none";
+  }
+
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+    function animateCursor() {
+      const ease = 0.2;
+      cursorX += (mouseX - cursorX) * ease;
+      cursorY += (mouseY - cursorY) * ease;
+      cursor.style.left = `${cursorX}px`;
+      cursor.style.top = `${cursorY}px`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+document.addEventListener("mouseleave", () => {
+  cursor.style.opacity = "0";
+});
+
+document.addEventListener("mouseenter", () => {
+  cursor.style.opacity = "1";
+});
+
+    document.querySelectorAll('.video-hover-target').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover-video'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover-video'));
+    });
+    document.querySelectorAll('.text-hover-target').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('hover-text'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('hover-text'));
+    });
+
+    const galleryContainer = document.getElementById("gallery-container");
+    const cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      const video = card.querySelector("video");
+      card.addEventListener("mouseenter", () => {
+        galleryContainer.classList.add("focus-active"); 
+        if(video) {
+          let playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {});
+          }
+        }
+      });
+      card.addEventListener("mouseleave", () => {
+        galleryContainer.classList.remove("focus-active"); 
+        if(video) video.pause();
+      });
+    });
+
+    document.querySelectorAll('.card-info').forEach(infoText => {
+      infoText.addEventListener('mouseenter', (e) => {
+        e.stopPropagation();
+        cursor.classList.remove('hover-video');
+        cursor.classList.add('hover-text');
+      });
+      infoText.addEventListener('mouseleave', (e) => {
+        e.stopPropagation();
+        cursor.classList.remove('hover-text');
+        cursor.classList.add('hover-video');
+      });
+    });
+
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault(); 
+      const form = this;
+      const btn = form.querySelector('.submit-btn');
+      const originalText = btn.innerText;
+      btn.innerText = "SUBMITTING...";
+      btn.style.color = "var(--accent-1)";
+
+      fetch("https://formspree.io/f/xjgzeloy", {
+        method: "POST",
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      })
+      .then(response => {
+        if (response.ok) {
+          form.reset();
+          btn.innerText = "SUBMITTED //";
+          btn.style.color = "var(--accent-1)";
+          btn.style.borderColor = "var(--accent-1)";
+          
+          setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.color = "var(--text)";
+            btn.style.borderColor = "rgba(255,255,255,0.2)";
+          }, 3000);
+        } else {
+          btn.innerText = "SUBMISSION FAILED";
+        }
+      })
+      .catch(error => { btn.innerText = "SYSTEM ERROR"; });
+    });
+
+    const modal = document.getElementById('game-modal');
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+    let gameLoop, isPlaying = false, score = 0, highScore = localStorage.getItem('samHighScore') || 0;
+    document.getElementById('high-score').innerText = highScore;
+    let player = { x: 175, y: 480, w: 40, h: 70, speed: 6, dx: 0 };
+    let obstacles = [], baseSpeed = 4, frameCount = 0;
+
+    function openGame() { modal.style.display = 'flex'; resetGame(); }
+    function closeGame() { modal.style.display = 'none'; cancelAnimationFrame(gameLoop); isPlaying = false; }
+    document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeGame(); if(!isPlaying) return; if(e.key === 'ArrowLeft' || e.key === 'a') player.dx = -player.speed; if(e.key === 'ArrowRight' || e.key === 'd') player.dx = player.speed; });
+    document.addEventListener('keyup', (e) => { if(e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'ArrowRight' || e.key === 'd') player.dx = 0; });
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); let rect = canvas.getBoundingClientRect(); let scaleX = canvas.width / rect.width; player.x = (e.touches[0].clientX - rect.left) * scaleX - (player.w/2); }, {passive: false});
+    canvas.addEventListener('mousemove', (e) => { if(!isPlaying) return; let rect = canvas.getBoundingClientRect(); let scaleX = canvas.width / rect.width; player.x = (e.clientX - rect.left) * scaleX - (player.w/2); });
+    function resetGame() { player.x = 180; player.dx = 0; obstacles = []; score = 0; baseSpeed = 5; frameCount = 0; isPlaying = true; document.getElementById('current-score').innerText = score; updateGame(); }
+    function spawnObstacle() { let w = 40; let h = 70; let x = Math.random() * (canvas.width - w); obstacles.push({ x: x, y: -h, w: w, h: h }); }
+    function updateGame() {
+      if (!isPlaying) return;
+      ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)'; ctx.lineWidth = 4; ctx.setLineDash([30, 30]); ctx.lineDashOffset = -frameCount * baseSpeed; ctx.beginPath(); ctx.moveTo(canvas.width / 3, 0); ctx.lineTo(canvas.width / 3, canvas.height); ctx.moveTo((canvas.width / 3) * 2, 0); ctx.lineTo((canvas.width / 3) * 2, canvas.height); ctx.stroke();
+      player.x += player.dx; if (player.x < 0) player.x = 0; if (player.x + player.w > canvas.width) player.x = canvas.width - player.w;
+      ctx.fillStyle = '#111'; ctx.fillRect(player.x, player.y + 15, 8, 16); ctx.fillRect(player.x + 32, player.y + 15, 8, 16); ctx.fillRect(player.x, player.y + 45, 8, 16); ctx.fillRect(player.x + 32, player.y + 45, 8, 16); 
+      ctx.fillStyle = '#00f0ff'; ctx.fillRect(player.x + 4, player.y + 5, 32, 6); ctx.fillRect(player.x + 16, player.y + 11, 8, 20); ctx.fillRect(player.x + 10, player.y + 30, 20, 25); ctx.fillRect(player.x + 6, player.y + 60, 28, 6); 
+      ctx.fillStyle = '#ffffff'; ctx.beginPath(); ctx.arc(player.x + 20, player.y + 38, 4, 0, Math.PI * 2); ctx.fill();
+      for (let i = 0; i < obstacles.length; i++) {
+        let obs = obstacles[i]; obs.y += baseSpeed;
+        ctx.fillStyle = '#ff0055'; ctx.fillRect(obs.x, obs.y, obs.w, obs.h); ctx.fillStyle = '#000'; ctx.fillRect(obs.x + 5, obs.y + 45, obs.w - 10, 15);
+        if (player.x < obs.x + obs.w && player.x + player.w > obs.x && player.y < obs.y + obs.h && player.y + player.h > obs.y) { isPlaying = false; if (score > highScore) { highScore = score; localStorage.setItem('samHighScore', highScore); document.getElementById('high-score').innerText = highScore; } ctx.fillStyle = 'rgba(0,0,0,0.85)'; ctx.fillRect(0,0,canvas.width,canvas.height); ctx.fillStyle = '#ff0055'; ctx.font = 'bold 35px Syncopate'; ctx.textAlign = 'center'; ctx.fillText('CRASHED', canvas.width/2, canvas.height/2); ctx.fillStyle = '#fff'; ctx.font = '15px Space Grotesk'; ctx.fillText('Click anywhere to restart', canvas.width/2, canvas.height/2 + 40); canvas.onclick = () => { canvas.onclick = null; resetGame(); }; return; }
+        if (obs.y > canvas.height) { obstacles.splice(i, 1); i--; score++; document.getElementById('current-score').innerText = score; if(score % 5 === 0) baseSpeed += 0.8; }
+      }
+      frameCount++; let spawnRate = Math.max(25, Math.floor(100 - (baseSpeed * 4))); if (frameCount % spawnRate === 0) spawnObstacle();
+      gameLoop = requestAnimationFrame(updateGame);
+    }
+  </script>
+</body>
+</html>
